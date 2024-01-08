@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         retrofit = RetrofitObject.getConexion();
         api = retrofit.create(ApiConexiones.class);
 
-        cargarIsuarios("1");
+        cargarIsuarios("1"); //este solo es de prueba, no cargara la 2 pagina
     }
 
     private void cargarIsuarios(String s) {
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.code() == HttpsURLConnection.HTTP_OK
                  && response.body() != null){
                     listaUsuarios.addAll(response.body().getData());
+                    adapter.notifyItemRangeInserted(0, listaUsuarios.size());
                 }
             }
 
