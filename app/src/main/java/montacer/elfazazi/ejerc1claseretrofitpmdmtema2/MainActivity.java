@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         api = retrofit.create(ApiConexiones.class);
 
         cargarIsuarios("1"); //este solo es de prueba, no cargara la 2 pagina
+
     }
 
     private void cargarIsuarios(String s) {
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
                 if (response.code() == HttpsURLConnection.HTTP_OK
                  && response.body() != null){
+                    adapter.notifyItemRangeRemoved(0, listaUsuarios.size());
+                    listaUsuarios.clear();
                     listaUsuarios.addAll(response.body().getData());
                     adapter.notifyItemRangeInserted(0, listaUsuarios.size());
                 }
@@ -70,5 +75,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "error al cargar datos", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    public void pulsarBoton(View v){
+        Button btn = (Button) v;
+        cargarIsuarios(btn.getText().toString());
     }
 }
